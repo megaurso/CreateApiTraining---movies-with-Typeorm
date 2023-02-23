@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { TMovie } from "../interfaces/movies.interfaces";
+import { Movie } from "../entities";
+import { TMovie, TMoviesReturn } from "../interfaces/movies.interfaces";
 import createMovieService from "../services/createMovieService";
 import deleteMovieService from "../services/deleteMovie.services";
 import listMovies from "../services/listMovies.services";
@@ -15,15 +16,9 @@ const createMovieController = async (req: Request, res: Response) => {
 
 };
 
-const listMoviesController =async (req: Request, res: Response) => {
-    const movies = await listMovies()
+const listMoviesController =async (req: Request, res: Response):Promise<Response> => {
+    const movies:TMoviesReturn = await listMovies(req.query)
 
-    // const queryFinish: TMovieResult = {
-    //     nextPage: nextPageFunction(),
-    //     previusPage: previusPageFunction(),
-    //     count: queryResult.rowCount,
-    // }
-    
     return res.json(movies)
 }
 
