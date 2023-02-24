@@ -14,6 +14,7 @@ class Movie {
 
   @Column({length:50 , unique:true})
   name: string;
+  
   @Column({type:"text", nullable: true})
   description?: string | undefined | null;
 

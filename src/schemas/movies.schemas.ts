@@ -17,7 +17,7 @@ const MovieResult = z.object({
     nextPage: z.string().nullable(),
     previusPage: z.string().nullable(),
     count: z.number().int(),
-    data: z.array(returnArrayMovieSchema)
+    data: z.array(returnMovieSchema)
 })
 
 const movieUpdateSchema = movieSchemas.partial()
