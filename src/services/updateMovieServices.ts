@@ -16,6 +16,9 @@ const updateMovieServices =async (movieData:TMovieUpdate,idMovie:number):Promise
         ...movieData
     })
 
+    console.log(oldMovieData)
+
+
     await movieRepository.save(movie)
 
     const updateUser = returnMovieSchema.parse(movie)
