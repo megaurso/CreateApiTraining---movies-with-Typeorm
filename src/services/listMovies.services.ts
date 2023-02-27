@@ -1,11 +1,16 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Movie } from "../entities";
-import { TMovieResult } from "../interfaces/movies.interfaces";
+import { TMovieQuerys, TMovieResult } from "../interfaces/movies.interfaces";
 import { returnArrayMovieSchema } from "../schemas/movies.schemas";
 
-const listMovies = async (page: any, perPage: any): Promise<TMovieResult> => {
+const listMovies = async (payload:TMovieQuerys): Promise<TMovieResult> => {
   const movieRepo: Repository<Movie> = AppDataSource.getRepository(Movie);
+  let perPage = payload.perPage === undefined ? 5 : payload.perPage;
+  let page =
+    isNaN(Number(payload.page)) || Number(payload.page) < 0
+      ? 1
+      : Number(payload.page);
   let take: number = +perPage;
   let skip: number = +page;
 
@@ -21,23 +26,21 @@ const listMovies = async (page: any, perPage: any): Promise<TMovieResult> => {
     take = 5;
   }
 
-  if (Number(skip) < 0) {
+  if (Number(skip) <= 0) {
     skip = 1;
   }
-  const totalPages = Math.ceil(+movieRepo.count / perPage);
+  const totalPages = Math.ceil(await movieRepo.count() / perPage);
 
   const nextPageFunction = () => {
     const nextPage = `http://localhost:3000/movies?page=${
       page + 1
     }&perPage=${+perPage}`;
-    if (+totalPages < page) {
+    if (totalPages <= page) {
       const nextPage = null;
       return nextPage;
     }
     return nextPage.toString();
   };
-  console.log(+totalPages)
-  console.log()
 
   const previusPageFunction = () => {
     let previusPage: string | null = `http://localhost:3000/movies?page=${
@@ -46,17 +49,25 @@ const listMovies = async (page: any, perPage: any): Promise<TMovieResult> => {
 
     if (page <= 1) {
       previusPage = null;
+    }else if(totalPages === page -1 || totalPages >= page){
+      previusPage = `http://localhost:3000/movies?page=${page - 1}&perPage=${+perPage}`;
+    }else{
+      previusPage = null;
     }
     return previusPage;
   };
+
+  const sort = payload.sort === undefined ? "id" : payload.sort
+  let order = payload.order === undefined ? "ASC" : payload.order
+  if(!payload.sort){
+    order = "ASC"
+  }
 
   const findMovies: Array<Movie> = await movieRepo.find({
     take,
     skip: take * (skip - 1),
     order: {
-      id: "DESC",
-      price: "DESC",
-      duration: "DESC",
+      [sort]:order
     },
   });
 

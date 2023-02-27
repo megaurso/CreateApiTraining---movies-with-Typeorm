@@ -22,13 +22,8 @@ const listMoviesController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  let { page, perPage }: any = req.query;
-  perPage = req.query.perPage === undefined ? 5 : req.query.perPage;
-  page =
-    isNaN(Number(req.query.page)) || Number(req.query.page) < 0
-      ? 1
-      : Number(req.query.page);
-  const movies: TMovieResult = await listMovies(page, perPage);
+  
+  const movies: TMovieResult = await listMovies(req.query);
 
   return res.json(movies);
 };

@@ -20,6 +20,13 @@ const MovieResult = z.object({
     data: z.array(returnMovieSchema)
 })
 
+const MovieParms = z.object({
+    perPage:z.number().int().optional(),
+    page:z.number().int().optional(),
+    sort:z.string().optional(),
+    order:z.string().optional()
+})
+
 const movieUpdateSchema = movieSchemas.partial()
 
 export {
@@ -27,5 +34,6 @@ export {
     returnMovieSchema,
     returnArrayMovieSchema,
     MovieResult,
-    movieUpdateSchema
+    movieUpdateSchema,
+    MovieParms
 }

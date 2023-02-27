@@ -1,4 +1,4 @@
-import { movieSchemas, returnArrayMovieSchema, returnMovieSchema,MovieResult, movieUpdateSchema } from "../schemas/movies.schemas";
+import { movieSchemas, returnArrayMovieSchema, returnMovieSchema,MovieResult, movieUpdateSchema, MovieParms } from "../schemas/movies.schemas";
 import { z } from "zod";
 import { DeepPartial, Repository } from "typeorm";
 import { Movie } from "../entities";
@@ -11,6 +11,7 @@ type TMovieResult = z.infer<typeof MovieResult>
 type TMovieUpdate = DeepPartial<TMovie>
 type iMovieUpdate = DeepPartial<Movie>;
 type iMovieRepo = Repository<Movie>;
+type TMovieQuerys = z.infer<typeof MovieParms>
 
 export {
     TMovie,
@@ -19,5 +20,6 @@ export {
     TMovieResult,
     TMovieUpdate,
     iMovieUpdate,
-    iMovieRepo
+    iMovieRepo,
+    TMovieQuerys
 }
