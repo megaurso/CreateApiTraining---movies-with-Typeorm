@@ -24,37 +24,13 @@ const listMoviesController = async (
 ): Promise<Response> => {
   let { page, perPage }: any = req.query;
   perPage = req.query.perPage === undefined ? 5 : req.query.perPage;
-  page = isNaN(Number(req.query.page)) || Number(req.query.page) < 0 ? 1 : Number(req.query.page);
-  const movies: TMoviesReturn = await listMovies(page, perPage);
-  const allMovies: TMoviesReturn = await listMovies(1,99)
-  const data = movies;
-  
-  const nextPageFunction = () => {
-    const nextPage = `http://localhost:3000/movies?page=${page + 1}&perPage=${+perPage}`;
-    if (data.length <= 4) {
-      const nextPage = null;
-      return nextPage;
-    }
-    return nextPage.toString();
-  };
+  page =
+    isNaN(Number(req.query.page)) || Number(req.query.page) < 0
+      ? 1
+      : Number(req.query.page);
+  const movies: TMovieResult = await listMovies(page, perPage);
 
-  const previusPageFunction = () => {
-    let previusPage: string | null = `http://localhost:3000/movies?page=${page - 1}&perPage=${+perPage}`;
-
-    if (page <= 1) {
-      previusPage = null;
-    }
-    return previusPage;
-  };
-  
-  const queryFinish: TMovieResult = {
-    nextPage: nextPageFunction(),
-    prevPage: previusPageFunction(),
-    count: allMovies.length,
-    data: [...movies],
-  };
-
-  return res.json(queryFinish);
+  return res.json(movies);
 };
 
 const deleteMoviesController = async (req: Request, res: Response) => {
