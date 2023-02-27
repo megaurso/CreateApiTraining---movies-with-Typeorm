@@ -40,21 +40,20 @@ const listMovies = async (payload: TMovieQuerys): Promise<TMovieResult> => {
       page = 1;
     }
 
-    
-    console.log(perPage);
-    let nextPage = `http://localhost:3000/movies?page=${
+    let nextPage: string | null = `http://localhost:3000/movies?page=${
       page + 1
     }&perPage=${+perPage}`;
-    if (Number(perPage) === 0) {
-      nextPage = `http://localhost:3000/movies?page=${
-        page + 1
-      }&perPage=5`;
+
+    if (Number(perPage) <= 0 || Number(perPage) > 5) {
+      nextPage = `http://localhost:3000/movies?page=${page + 1}&perPage=5`;
     }
     if (totalPages <= page) {
-      const nextPage = null;
-      return nextPage;
+      nextPage = null;
     }
-    return nextPage.toString();
+    if (Math.sign(+perPage) <= -1) {
+      nextPage = `http://localhost:3000/movies?page=${page + 1}&perPage=5`;
+    }
+    return nextPage;
   };
 
   const previusPageFunction = () => {
