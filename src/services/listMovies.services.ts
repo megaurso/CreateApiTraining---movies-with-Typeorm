@@ -6,7 +6,7 @@ import { returnArrayMovieSchema } from "../schemas/movies.schemas";
 
 const listMovies = async (payload: TMovieQuerys): Promise<TMovieResult> => {
   const movieRepo: Repository<Movie> = AppDataSource.getRepository(Movie);
-  let perPage = payload.perPage === undefined ? 5 : payload.perPage;
+  let perPage = payload.perPage === undefined || isNaN(payload.perPage) ? 5 : payload.perPage;
   let page =
     isNaN(Number(payload.page)) || Number(payload.page) < 0
       ? 1
@@ -17,7 +17,7 @@ const listMovies = async (payload: TMovieQuerys): Promise<TMovieResult> => {
   if (!Number.isInteger(take)) {
     Math.ceil(take);
   }
-
+  
   if (!Number.isInteger(skip)) {
     Math.ceil(skip);
   }
@@ -43,6 +43,7 @@ const listMovies = async (payload: TMovieQuerys): Promise<TMovieResult> => {
     let nextPage: string | null = `http://localhost:3000/movies?page=${
       page + 1
     }&perPage=${+perPage}`;
+    
 
     if (Number(perPage) <= 0 || Number(perPage) > 5) {
       nextPage = `http://localhost:3000/movies?page=${page + 1}&perPage=5`;
