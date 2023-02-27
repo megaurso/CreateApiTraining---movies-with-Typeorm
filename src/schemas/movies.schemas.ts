@@ -15,7 +15,7 @@ const returnArrayMovieSchema = returnMovieSchema.array()
 
 const MovieResult = z.object({
     nextPage: z.string().nullable(),
-    previusPage: z.string().nullable(),
+    prevPage: z.string().nullable(),
     count: z.number().int(),
     data: z.array(returnMovieSchema)
 })

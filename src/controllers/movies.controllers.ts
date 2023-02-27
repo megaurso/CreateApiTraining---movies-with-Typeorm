@@ -25,7 +25,9 @@ const listMoviesController = async (
 ): Promise<Response> => {
   let { page, perPage }: any = req.query;
   const movies: TMoviesReturn = await listMovies(page, perPage);
+  const allMovies: TMoviesReturn = await listMovies(1,99)
   const data = movies;
+  
 
   perPage = req.query.perPage === undefined ? 5 : req.query.perPage;
   page =
@@ -55,11 +57,12 @@ const listMoviesController = async (
 
     return previusPage.toString();
   };
+  
 
   const queryFinish: TMovieResult = {
     nextPage: nextPageFunction(),
-    previusPage: previusPageFunction(),
-    count: movies.length,
+    prevPage: previusPageFunction(),
+    count: allMovies.length,
     data: [...movies],
   };
 
