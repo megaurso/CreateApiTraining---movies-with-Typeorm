@@ -12,7 +12,7 @@ const dataSourceConfig = (): DataSourceOptions => {
 
   const nodeEnv: string | undefined = process.env.NODE_ENV;
 
-  if (nodeEnv === "teste") {
+  if (nodeEnv === "test") {
     return {
       type: "sqlite",
       database: ":memory:",
@@ -34,6 +34,6 @@ const dataSourceConfig = (): DataSourceOptions => {
   };
 };
 
-const AppDataSource = new DataSource(dataSourceConfig());
+export const AppDataSource = new DataSource(dataSourceConfig());
 
-export default AppDataSource ;
+

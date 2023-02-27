@@ -1,5 +1,5 @@
 import { Repository } from "typeorm"
-import AppDataSource from "../data-source"
+import {AppDataSource} from "../data-source"
 import { Movie } from "../entities"
 import { TMovieReturn, TMovieUpdate } from "../interfaces/movies.interfaces"
 import { returnMovieSchema } from "../schemas/movies.schemas"
@@ -15,9 +15,6 @@ const updateMovieServices =async (movieData:TMovieUpdate,idMovie:number):Promise
         ...oldMovieData,
         ...movieData
     })
-
-    console.log(oldMovieData)
-
 
     await movieRepository.save(movie)
 

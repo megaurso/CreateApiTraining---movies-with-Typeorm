@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Movie } from "../entities";
 import {
   TMovie,
   TMovieResult,
@@ -24,21 +23,14 @@ const listMoviesController = async (
   res: Response
 ): Promise<Response> => {
   let { page, perPage }: any = req.query;
+  perPage = req.query.perPage === undefined ? 5 : req.query.perPage;
+  page = isNaN(Number(req.query.page)) || Number(req.query.page) < 0 ? 1 : Number(req.query.page);
   const movies: TMoviesReturn = await listMovies(page, perPage);
   const allMovies: TMoviesReturn = await listMovies(1,99)
   const data = movies;
   
-
-  perPage = req.query.perPage === undefined ? 5 : req.query.perPage;
-  page =
-    isNaN(Number(req.query.page)) || Number(req.query.page) < 0
-      ? 1
-      : Number(req.query.page);
-  page = page * perPage;
-
   const nextPageFunction = () => {
-    const resultPage: number = Number(page) / Number(perPage) + 1;
-    const nextPage = `http://localhost:3000/movies?page=${+resultPage}&perPage${+perPage}`;
+    const nextPage = `http://localhost:3000/movies?page=${page + 1}&perPage=${+perPage}`;
     if (data.length <= 4) {
       const nextPage = null;
       return nextPage;
@@ -47,18 +39,14 @@ const listMoviesController = async (
   };
 
   const previusPageFunction = () => {
-    const resultPage: number = Number(page) / Number(perPage) - 1;
-    const previusPage = `http://localhost:3000/movies?page=${+resultPage!}&perPage${+perPage}`;
+    let previusPage: string | null = `http://localhost:3000/movies?page=${page - 1}&perPage=${+perPage}`;
 
-    if (page <= 0) {
-      const previusPage = null;
-      return previusPage;
+    if (page <= 1) {
+      previusPage = null;
     }
-
-    return previusPage.toString();
+    return previusPage;
   };
   
-
   const queryFinish: TMovieResult = {
     nextPage: nextPageFunction(),
     prevPage: previusPageFunction(),
