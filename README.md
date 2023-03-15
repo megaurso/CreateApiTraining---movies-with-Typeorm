@@ -9,7 +9,7 @@ dependencies {
     reflect-metadata
     typeorm
     zod
-  }
+  },
   devDependencies{
     @jest/globals
     @types/bcryptjs
