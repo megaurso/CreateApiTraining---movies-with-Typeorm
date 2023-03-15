@@ -1,6 +1,6 @@
 # movies-typeorm
 # Dependencias 
-dependencies {
+#dependencies {
     bcryptjs
     dotenv
     express
@@ -10,7 +10,7 @@ dependencies {
     typeorm
     zod
   },
-  devDependencies{
+  #devDependencies{
     @jest/globals
     @types/bcryptjs
     @types/express
