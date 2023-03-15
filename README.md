@@ -1,6 +1,5 @@
 # movies-typeorm
-# Dependencias 
-#dependencies {
+# dependencies : 
     bcryptjs
     dotenv
     express
@@ -9,8 +8,8 @@
     reflect-metadata
     typeorm
     zod
-  },
-  #devDependencies{
+  
+  # devDependencies: 
     @jest/globals
     @types/bcryptjs
     @types/express
@@ -25,4 +24,4 @@
     ts-node
     ts-node-dev
     typescript 
-  }
+  
